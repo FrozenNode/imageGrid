@@ -1,0 +1,33 @@
+<html>
+<head>
+	<!-- include knockout, jquery, and imageGrid.js here -->
+	<style>
+		#container >ul >li{
+			position: relative;
+			float: left;
+			padding: 0px;
+			margin: 3px;
+		}
+
+		#container >ul >li >div{
+			overflow: hidden;
+		}
+	</style>
+</head>
+<body>
+	<div id="container" data-bind="template: 'image_grid' "></div>
+
+	<script id="image_grid" type="text/html">
+		<ul class="image_grid clearfix" data-bind="foreach: images, style: { minHeight: winMinHeight }">
+			<li data-bind="template: 'image_block' "></li>
+		</ul>
+	</script>
+
+	<script id="image_block" type="text/html">
+		<div data-bind="visible: vwidth() > 0, style: { width: vwidth() + 'px', height: height() + 'px' }">
+			<a data-bind="attr: { href: '#' }">
+				<img data-bind="attr: { src: src }, style: { width: width() + 'px', height: height() + 'px', marginLeft: margin() + 'px' }" />
+			</a>
+		</div>
+	</script>
+</body>
