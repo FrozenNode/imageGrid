@@ -93,14 +93,11 @@ ko.extenders.imageGrid = function(target, options){
 	target.timer = null;
 	target.subscribe(function(val){
 		clearTimeout(target.timer);
-		//unfortunately, the only area I could add the vwidth and margin properties
-		//without some type of templating error occurring
-		$.each(val, function(i, v){
-			if(typeof v.vwidth === "undefined"){
-				v.vwidth = ko.observable(0);
-				v.margin = ko.observable(0);
-			}
-		});
+		var v = val.length > 0 ? val[val.length - 1] : false;
+		if(v && typeof v.vwidth === "undefined"){
+			v.vwidth = ko.observable(0);
+			v.margin = ko.observable(0);
+		}
 
 		target.timer = setTimeout(function(){
 			target.makeGrid();
