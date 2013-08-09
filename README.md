@@ -1,4 +1,4 @@
-# Multup
+# imageGrid
 
 A responsive image grid inspired by http://www.techbits.de/2011/10/25/building-a-google-plus-inspired-image-gallery/
 Rebuilt with Knockout.js
