@@ -12,6 +12,13 @@
 		#container >ul >li >div{
 			overflow: hidden;
 		}
+
+		#container .full_width {
+			margin: 0;
+			text-align: center;
+			background: #333;
+			padding: 20px 0;
+		}
 	</style>
 </head>
 <body>
@@ -20,14 +27,23 @@
 	<script id="image_grid" type="text/html">
 		<ul class="image_grid clearfix" data-bind="foreach: images, style: { minHeight: winMinHeight }">
 			<li data-bind="template: 'image_block' "></li>
+			<!-- ko if: rowEnd() -->
+			<li data-bind="template: 'image_full_row'"></li>
+			<!-- /ko -->
 		</ul>
 	</script>
 
 	<script id="image_block" type="text/html">
 		<div data-bind="visible: vwidth() > 0, style: { width: vwidth() + 'px', height: height() + 'px' }">
-			<a data-bind="attr: { href: '#' }">
+			<a data-bind="attr: { href: '#' }, click: function(){ $parent.images.activateImage($index()) }">
 				<img data-bind="attr: { src: src }, style: { width: width() + 'px', height: height() + 'px', marginLeft: margin() + 'px' }" />
 			</a>
 		</div>
 	</script>
+
+	<script id="image_full_row" type="text/html">
+		<div class="full_width" data-bind="style: { width:  $parent.images.containerWidth() + 'px' }">
+		<img data-bind="attr: { src: $parent.images()[$parent.images.activeImage()].src }" />
+	</div>
+</script>
 </body>

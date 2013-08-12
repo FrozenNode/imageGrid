@@ -16,6 +16,26 @@ ko.extenders.imageGrid = function(target, options){
 	//This will keep track of when the grid dimensions are being calculated
 	target.calculating = ko.observable(false);
 
+	//keep track of how wide the container element around the images is
+	target.containerWidth = ko.observable(0);
+
+	//Index of the image that should be used for a full row display
+	target.activeImage = ko.observable(-1);
+
+	//On click, call this function and pass in the index of the
+	//image that should be have a full width display
+	//if it is equal to the previous active index then set equal
+	//to -1 to close the large grid
+	target.activateImage = function(i){
+		target.activeImage(target.activeImage() === i ? -1 : i);
+	};
+
+	//make the grid again every time the image index changes
+	target.activeImage.subscribe(function(v){
+		target.makeGrid();
+	});
+
+
 	//This function determines the number of pixels that need to be trimmed from
 	//each item in the image grid row
 	target.calculateCutOff = function(len, delta, items){
@@ -46,26 +66,38 @@ ko.extenders.imageGrid = function(target, options){
 		if(!target.calculating()){
 			target.calculating(true);
 			//using jQuery to get the width of the container element
-			var containerWidth = options.container.innerWidth(),
-				j = target().length, //how many images are there
+			target.containerWidth(options.container.innerWidth());
+
+			var j = target().length, //how many images are there
 				l = 0; //which image are we on
 
 			while( j > 0){
 				var row = [],
-					len = 0; //length of the current image row in pixels
+					len = 0, //length of the current image row in pixels
+					end = false; //should the row have the full width image at the end of it
 
 				// Build a row of images until longer than maxwidth
-				while(j > 0 && len < containerWidth) {
+				while(j > 0 && len < target.containerWidth()) {
 					//remove an image ... add it to the row calculations
-					row.push(l);
 					//margins is the sum of the horizontal margins for each image
+					if(target.activeImage() === l){
+						end = true;
+					}
+					target()[l].rowEnd(false);
+					row.push(l);
 					len += (target()[l].width() + options.margins);
 					l++;
 					j--;
 				}
 
+				if(end){
+					target()[l-1].rowEnd(true);
+				}
+
+				end = false;
+
 				// calculate by how many pixels too long?
-				var delta = len - containerWidth,
+				var delta = len - target.containerWidth(),
 				// if the line is too long, make images smaller
 					cut = row.length > 0 && delta > 0 ? true : false,
 					cutoff = cut ? target.calculateCutOff(len, delta, row) : 0;
