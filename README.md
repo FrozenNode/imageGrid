@@ -27,11 +27,15 @@ In your knockout view model, use the imageGrid as a typical extension
 			}
 	}),
 
+#Example
+[http://frozennode.com/imageGrid/index.php](http://frozennode.com/imageGrid/index.php)
 
 ## Copyright and License
 written by Nick Kelly
 imageGrid is released under the MIT License
 
 ## Changelog
+1.0.0
+  Added min height fix and working example
 
-### version 0.9.0
+### version 1.0.0
