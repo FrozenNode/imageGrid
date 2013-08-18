@@ -76,17 +76,17 @@ ko.extenders.imageGrid = function(target, options){
 			target.calculating(true);
 			//using jQuery to get the width of the container element
 			target.containerWidth(options.container.innerWidth());
-		console.log(target.containerWidth());
+
 			var j = target().length, //how many images are there
 				l = 0; //which image are we on
 
-			while( j > 0){
+			while( l < j){
 				var row = [],
 					len = 0, //length of the current image row in pixels
 					end = false; //should the row have the full width image at the end of it
 
 				// Build a row of images until longer than maxwidth
-				while(j > 0 && len < target.containerWidth()) {
+				while(len < target.containerWidth()) {
 					//remove an image ... add it to the row calculations
 					//margins is the sum of the horizontal margins for each image
 					if(target.activeImage() === l){
@@ -96,7 +96,6 @@ ko.extenders.imageGrid = function(target, options){
 					row.push(l);
 					len += (target()[l].width() + options.margins);
 					l++;
-					j--;
 				}
 
 				if(end){
